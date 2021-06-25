@@ -12,9 +12,9 @@ const addNote = (title, body) => {
         }
         notes.push(note)
         saveNotes(notes)
-        console.log("New note added!")
+        console.log(chalk.green.inverse("New Note added!"))
     } else {
-        console.log("Title already exists!!!")
+        console.log(chalk.red.inverse("Title already exists!!!"))
     }
 }
 
@@ -38,20 +38,24 @@ const removeNote = (title) => {
     const notes = loadNotes()
     const note = notes.filter(note => note.title === title)
     if (note.length === 0) {
-        console.log(chalk.bgRed("Note with given title doesnt exist!!"))
+        console.log(chalk.red.inverse("Note with given title doesnt exist!!"))
     } else {
         const updatedNotes = notes.filter(note => note.title !== title)
         saveNotes(updatedNotes)
-        console.log(chalk.bgGreen("Note with title: '" + title + "' deleted!!"))
+        console.log(chalk.green.inverse("Note with title: '" + title + "' deleted!!"))
     }
 }
 
 const listNodes = () => {
     const notes = loadNotes()
-    console.log(chalk.cyan.bold("Your Notes: "))
-    notes.forEach(element => {
-        console.log(`${chalk.bold(element.title)}:`, chalk.italic(element.body))
-    });
+    if (notes.length > 0) {
+        console.log(chalk.cyan.bold("Your Notes: "))
+        notes.forEach(element => {
+            console.log(`-> ${chalk.bold(element.title)}:`, chalk.italic(element.body))
+        })
+    } else {
+        console.log(chalk.redBright("No notes available"))
+    }
 }
 
 const readNote = (title) => {
@@ -65,5 +69,5 @@ const readNote = (title) => {
 }
 
 module.exports = {
-    getNotes, addNote, removeNote, listNodes, readNote
+    addNote, removeNote, listNodes, readNote
 }
